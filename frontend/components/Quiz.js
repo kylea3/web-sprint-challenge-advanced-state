@@ -1,24 +1,33 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux';
+import { fetchQuiz, setQuiz } from '../state/action-creators';
 
-export default function Quiz(props) {
+const Quiz = (props) => {
+  const { quizState, fetchQuiz, setQuiz } = props;
+  useEffect(() => {
+    axios.get('http://localhost:9000/api/quiz/next')
+      .then(res => setQuiz(res.data))
+      .catch(err => console.log(err))
+    }, []);
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        true ? (
+        quizState ? (
           <>
-            <h2>What is a closure?</h2>
+            <h2>{quizState.question}</h2>
 
             <div id="quizAnswers">
               <div className="answer selected">
-                A function
+                {quizState.answers[0].text}
                 <button>
                   SELECTED
                 </button>
               </div>
 
               <div className="answer">
-                An elephant
+              {quizState.answers[1].text}
                 <button>
                   Select
                 </button>
@@ -32,3 +41,12 @@ export default function Quiz(props) {
     </div>
   )
 }
+
+const mapStateToProps = state => {
+  return {
+    quizState: state.quiz.quizState
+  }
+}
+
+
+export default connect(mapStateToProps, { fetchQuiz, setQuiz })(Quiz);
