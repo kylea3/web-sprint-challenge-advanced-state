@@ -1,10 +1,10 @@
 import axios from 'axios';
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux';
-import { fetchQuiz, setQuiz, selectAnswer } from '../state/action-creators';
+import { fetchQuiz, setQuiz, selectAnswer, postAnswer } from '../state/action-creators';
 
 const Quiz = (props) => {
-  const { quizState, fetchQuiz, setQuiz, selectAnswer, selectedAnswer } = props;
+  const { quizState, fetchQuiz, setQuiz, selectAnswer, selectedAnswer, postAnswer } = props;
   useEffect(() => {
     axios.get('http://localhost:9000/api/quiz/next')
       .then(res => setQuiz(res.data))
@@ -14,10 +14,16 @@ const Quiz = (props) => {
   const onSelectedAnswer = (evt) => {
     selectAnswer(evt.target.id)
   }
-  const onSubmit = (evt) => {
-    evt.preventDefault
+  const onSubmit = () => {
+    const newPost = {
+      quiz_id: quizState.quiz_id,
+      answer_id: selectedAnswer
+    }
+    postAnswer(newPost)
     fetchQuiz()
   }
+
+
   return (
     <div id="wrapper">
       {
@@ -42,7 +48,7 @@ const Quiz = (props) => {
               </div>
             </div>
 
-            <button id="submitAnswerBtn" onClick={onSubmit}>Submit answer</button>
+            <button disabled={selectedAnswer === null ? true : false} id="submitAnswerBtn" onClick={onSubmit}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -58,4 +64,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, { fetchQuiz, setQuiz, selectAnswer })(Quiz);
+export default connect(mapStateToProps, { fetchQuiz, setQuiz, selectAnswer, postAnswer })(Quiz);

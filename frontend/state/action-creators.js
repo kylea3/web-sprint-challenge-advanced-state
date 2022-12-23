@@ -38,19 +38,24 @@ export function fetchQuiz(data) {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
-    dispatch({ type: 'RESET_QUIZ_STATE'});
+    dispatch({ type: 'SET_QUIZ_INTO_STATE', payload: null});
     axios.get('http://localhost:9000/api/quiz/next')
       .then(res => 
         dispatch({ type: 'SET_QUIZ_INTO_STATE', payload: res.data}))
       .catch(err => console.log(err))
   }
 }
-export function postAnswer() {
+export function postAnswer(postData) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
     // - Dispatch the fetching of the next quiz
+    dispatch({ type: 'SET_SELECTED_ANSWER', payload: null})
+    axios.post('http://localhost:9000/api/quiz/answer', postData)
+      .then(res => 
+        dispatch({ type: 'SET_INFO_MESSAGE', payload: res.data.message}))
+      .catch(err => console.error(err))
   }
 }
 export function postQuiz() {
