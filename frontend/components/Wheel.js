@@ -14,7 +14,6 @@ const Wheel= (props) => {
   }
   return (
     <div id="wrapper">
-      {console.log(props.wheelNumber)}
       <div id="wheel">
         <div className={wheelNumber === 0 ? "cog active" : "cog"} style={{ "--i": 0 }}>{wheelNumber === 0 ? 'B' : ''}</div>
         <div className={wheelNumber === 1 ? "cog active" : "cog"} style={{ "--i": 1 }}>{wheelNumber === 1 ? 'B' : ''}</div>
