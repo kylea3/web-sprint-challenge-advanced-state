@@ -5,11 +5,18 @@ import { fetchQuiz, setQuiz, selectAnswer, postAnswer } from '../state/action-cr
 
 const Quiz = (props) => {
   const { quizState, fetchQuiz, setQuiz, selectAnswer, selectedAnswer, postAnswer } = props;
-  useEffect(() => {
+  
+  const initialQuizState = () => {
+    if(quizState === null) {
     axios.get('http://localhost:9000/api/quiz/next')
       .then(res => setQuiz(res.data))
       .catch(err => console.log(err))
-    }, []);
+    } else {}
+  }
+
+  useEffect(() => {
+    initialQuizState()
+  }, []);
 
   const onSelectedAnswer = (evt) => {
     selectAnswer(evt.target.id)
