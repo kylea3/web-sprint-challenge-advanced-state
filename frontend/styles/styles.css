@@ -241,3 +241,7 @@ form button {
   background-color: rgb(252, 252, 252);
   border: 1px dashed #48484871;
 }
+
+#special {
+  color: rgb(252, 252, 252)
+}

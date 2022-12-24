@@ -27,7 +27,7 @@ const Quiz = (props) => {
       answer_id: selectedAnswer
     }
     postAnswer(newPost)
-    fetchQuiz()
+    setTimeout(() => fetchQuiz(), 100)
   }
 
 
